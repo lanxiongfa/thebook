@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.mvc.dao.BookDao">
+
+
+    <!--通过用户名密码进行验证登录-->
+    <select id="findAllBook" parameterType="Map"  resultType="Map">
+        SELECT B_NAME,COUNT(B_ID) as COUNT FROM book GROUP BY B_NAME ;
+    </select>
+
+    <!--通过书的id  查找书的全部信息-->
+    <select id="findBookByName" resultType="Map">
+        SELECT * FROM BOOK WHERE B_NAME=#{B_NAME};
+    </select>
+    <!--通过书的名字查找全部书籍-->
+    <select id="bookbase" resultType="Map">
+        SELECT * FROM BOOK WHERE B_NAME=#{B_NAME};
+    </select>
+
+    <!--查看借书的用户-->
+    <select id="showAll" resultType="Map">
+       SELECT b.B_ID ,b.B_NAME,u.C_ID,u.C_NAME FROM book b  join  C_USER u on b.C_ID=u.C_ID WHERE b.B_ID=#{b.B_ID} and b.B_NAME is NOT NULL and u.B_ID=b.B_ID ;
+    </select>
+    <!--借阅书籍-->
+    <update id="borrow" parameterType="Map">
+        update c_user U,book B  set B.C_ID=U.C_ID ,B.B_STA=#{B.B_STA} ,U.B_ID=B.B_ID where B.B_ID=#{B.B_ID}  AND U.C_ID=#{U.C_ID} ;
+
+    </update>
+
+
+
+
+</mapper>

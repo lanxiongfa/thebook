@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:mybatis="http://mybatis.org/schema/mybatis-spring"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+      http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+      http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring.xsd">
+
+    <description>Spring MVC Configuration</description>
+
+    <!--启动spring mvc注解-->
+    <mvc:annotation-driven></mvc:annotation-driven>
+
+    <!-- 定义无Controller的path<->view直接映射 -->
+    <mvc:view-controller path="/" view-name="redirect:/index/index"/>
+    <mvc:interceptors>
+        <!--<bean class="com.spring.mvc.controller.interceptor.permisionInterceptorrmisionInterceptor"></bean>
+        <bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+-->
+       <!-- </bean>-->
+        <mvc:interceptor>
+            <!--配置拦截器作用的路径  或不作用的路径-->
+            <mvc:mapping path="/user"/>
+            <mvc:mapping path="/showbook"/>
+            <bean class="com.spring.mvc.controller.interceptor.permisionInterceptor">
+
+            </bean>
+
+
+
+
+
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/tologin"/>
+            <mvc:mapping path="/toregister"/>
+            <bean class="com.spring.mvc.controller.interceptor.loginloggingInterceptor"></bean>
+        </mvc:interceptor>
+
+    </mvc:interceptors>
+    <!-- 自动扫描的包名 ，使Spring支持自动检测组件，如注解的Controller-->
+    <context:component-scan base-package="com.spring.mvc"/>
+
+    <!-- 视图解析器:定义跳转的文件的前后缀 -->
+
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/pages/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+</beans>

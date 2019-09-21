@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.mvc.dao.LoginAndUserDao">
+
+
+    <!--通过用户名密码进行验证登录-->
+    <select id="login"  resultType="Map">
+        SELECT * FROM C_USER WHERE C_USERNAME=#{C_USERNAME} AND C_PASSWORD=#{C_PASSWORD};
+    </select>
+    <!--进入图书查询列表-->
+
+    <!--查询所有的用户-->
+    <select id="findAllUser" resultType="Map">
+         SELECT * FROM C_USER;
+    </select>
+    <!--更新用户信息-->
+    <update id="updateUser">
+        UPDATE  C_USER SET C_NAME=#{C_NAME},C_EMAIL=#{C_EMAIL},GENDER=#{GENDER},C_AGE=#{C_AGE},C_USERNAME=#{C_USERNAME},C_PASSWORD=#{C_PASSWORD} WHERE C_ID=#{C_ID};
+    </update>
+    <!--删除用户-->
+    <delete id="deleteUser" >
+        DELETE FROM C_USER WHERE C_ID=#{C_ID};
+    </delete>
+    <!--通过id查找用户-->
+    <select id="findById" resultType="Map">
+         SELECT * FROM C_USER WHERE  C_ID=#{C_ID} ;
+    </select>
+
+    <!--注册新用户-->
+    <insert id="insertUser" parameterType="Map">
+        INSERT INTO C_USER(C_NAME,C_USERNAME,C_PASSWORD,C_AGE,GENDER,C_EMAIL) VALUES (#{C_NAME},#{C_USERNAME},#{C_PASSWORD},#{C_AGE},#{GENDER},#{C_EMAIL});
+
+    </insert>
+
+    <!--通过用户名称查找-->
+    <select id="findByName" parameterType="String" resultType="Map">
+          SELECT * FROM C_USER WHERE  C_USERNAME=#{C_USERNAME} ;
+    </select>
+
+    <!--查找所有的书籍-->
+    <select id="findAllBook" resultType="Map">
+        SELECT * FROM BOOK;
+    </select>
+    <!--通过传入的id参数根据书的名字查找书籍的种类-->
+    <select id="findBookByName" parameterType="String" resultType="Map">
+        SELECT distinct (B_NAME),B_PUB,B_AUTHOR,B_DATA FROM BOOK WHERE B_NAME=#{B_NAME};
+    </select>
+
+    <!--根据传入的id查找书籍的名字然后在查找书籍数量-->
+
+    <select id="allBooks"  resultType="int">
+        select COUNT(B_ID)   from BOOK B  WHERE B_NAME=#{B_NAME};
+    </select>
+
+    <!--根据传入的id查找书籍的名字然后在查找书籍为借阅数量-->
+    <select id="othersBooks" resultType="int">
+        select COUNT(B_ID) from BOOK WHERE B_NAME=#{B_NAME} AND  C_ID is NULL group by B_STA  ;
+    </select>
+    <select id="permission" resultType="int" >
+        select C_ID  FROM C_USER WHERE  C_USERNAME=#{C_USERNAME}
+    </select>
+
+</mapper>
